@@ -1,0 +1,25 @@
+#JSGF V1.0;
+
+grammar hello;
+public <greet> = (good morning | hello);
+
+public <voices>  = ( switch to voice one | switch to voice two | switch to voice three | OMEGA be kind | OMEGA be unkind);
+
+public <number> = ( zero | one | two | three | four | five | six | seven | nine | ten
+                   | eleven | twelve | thirteen | fourteen | fifteen | sixteen | seventeen | eighteen | nineteen | twenty
+                   | thirty | forty | fifty | sixty | seventy | eighty | ninety |
+		            hundred | thousand | million | billion)+;
+
+public <syntax> = ( calculate ) <number>{1} (plus | minus | multiply | division){1} <number>{1};
+
+public <alphabet> = ( a | b | c | d | e | f | g | h | i | j | k | q | l | m | n | o | p | r | s | t | u | w | v | x | y | z );
+
+public <actions> = ( save command track | crack password | yes she is | show me the most beautiful girl |show switch panel | set volume | enable writing | disable writing | tell me a joke | very funny | what is your name | omega exit | what is the weather today | what is the day today | who is your daddy | close application | enable writing | disable writing);
+
+public <keys> = ( space | enter | backspace | escape | caps lock | period | comma | exclamation mark | question mark);
+
+public <keyCombination> = ( switch window | take screenshot | delete | delete word | delete sentence);
+
+public <opener> = ( open | close ) ( browser | file explorer | facebook | youtube | tab | application);
+
+public <browser> = ( previous | next | right | left | scroll ) ( down | up | close | tab);
