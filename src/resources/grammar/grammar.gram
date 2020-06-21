@@ -14,7 +14,7 @@ public <syntax> = ( calculate ) <number>{1} (plus | minus | multiply | division)
 
 public <alphabet> = ( a | b | c | d | e | f | g | h | i | j | k | q | l | m | n | o | p | r | s | t | u | w | v | x | y | z );
 
-public <actions> = ( save command track | crack password | yes she is | show me the most beautiful girl |show switch panel | set volume | enable writing | disable writing | tell me a joke | very funny | what is your name | omega exit | what is the weather today | what is the day today | who is your daddy | close application | enable writing | disable writing);
+public <actions> = ( remote desktop | save command track | crack password | yes she is | show me the most beautiful girl |show switch panel | set volume | enable writing | disable writing | tell me a joke | very funny | what is your name | omega exit | what is the weather today | what is the day today | who is your daddy | close application | enable writing | disable writing);
 
 public <keys> = ( space | enter | backspace | escape | caps lock | period | comma | exclamation mark | question mark);
 

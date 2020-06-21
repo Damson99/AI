@@ -1,17 +1,15 @@
 package model;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Port;
-import javax.swing.*;
 
 import functions.*;
 import functions.PassCracker.PasswordCracker;
+import layout.AuthenticationFrame;
 import layout.SwitchPanel;
 import utils.StringToNumberEng;
 import utils.StringToSpeech;
@@ -22,40 +20,36 @@ import edu.cmu.sphinx.api.SpeechResult;
 
 public class Main
 {
-
     private Logger logger = Logger.getLogger(getClass().getName());
-
     private boolean enableWriting;
-
     private String task;
-
     private Thread speechThread;
-
     private Thread resourcesThread;
-
     private LiveSpeechRecognizer recognizer;
-
-    private PCAttributes pcAttributes = new PCAttributes();
-
-    private StringToSpeech stringToSpeech = new StringToSpeech();
-
-    private StringToNumberEng stringToNumberEng = new StringToNumberEng();
-
-    private DayInfo dayInfo = new DayInfo();
-
-    private Opener opener = new Opener();
-
-    private Jokes jokes = new Jokes();
-
-    private Init init = new Init();
-
-    private Calculator calculator = new Calculator();
-
-    private PressKeys pressKeys = new PressKeys();
-
-    private SwitchPanel switchPanel = new SwitchPanel();
+    private final PCAttributes pcAttributes = new PCAttributes();
+    private final StringToSpeech stringToSpeech = new StringToSpeech();
+    private final StringToNumberEng stringToNumberEng = new StringToNumberEng();
+    private final DayInfo dayInfo = new DayInfo();
+    private final Opener opener = new Opener();
+    private final Jokes jokes = new Jokes();
+    private final Init init = new Init();
+    private final Calculator calculator = new Calculator();
+    private final PressKeys pressKeys = new PressKeys();
+    private final SwitchPanel switchPanel = new SwitchPanel();
+    private final RemoteDesktop remoteDesktop = new RemoteDesktop();
 
 
+    public static void main(String[] args)
+    {
+        new AuthenticationFrame();
+    }
+
+    public static void start()
+    {
+        new Main();
+        new Init().init();
+        new SwitchPanel();
+    }
 
     private Main()
     {
@@ -66,7 +60,7 @@ public class Main
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
         configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/language/en-us.lm.dmp");
-        configuration.setGrammarPath("file:/C:\\Java\\AI\\omega\\src\\resources\\grammar");
+        configuration.setGrammarPath("src\\resources\\grammar");
         configuration.setGrammarName("grammar");
         configuration.setUseGrammar(true);
 
@@ -249,7 +243,7 @@ public class Main
             if("show me the most beautiful girl".equalsIgnoreCase(task))
             {
                 opener.openBrowser("https://www.instagram.com/olciamat/");
-                stringToSpeech.speak("She is the most beautiful girl on the world is she", false, true);
+                stringToSpeech.speak("She is the most beautiful girl on the world, is she", false, true);
             }
 
             if("yes she is".equalsIgnoreCase(task))
@@ -371,77 +365,12 @@ public class Main
             {
                 stringToSpeech.speak(calculator.calculate(task), false, true);
             }
+
+            if("remote desktop".equalsIgnoreCase(task))
+            {
+                remoteDesktop.initialize();
+                stringToSpeech.speak("Enter server ip", false, true);
+            }
         }
     }
-
-    public static void main(String[] args)
-    {
-        JFrame frame = new JFrame("OMEGA ACCESS");
-        frame.getContentPane().setBackground(Color.BLACK);
-        frame.setSize(300, 150);
-        frame.setIconImage(new ImageIcon("/resources/Icon1.png").getImage());
-        System.out.println(new ImageIcon("/resources/Icon1.png").getImage().getSource());
-        System.out.println(new ImageIcon("/resources/Icon1.png"));
-
-        JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(100,40,100,30);
-        passwordField.setBackground(Color.BLACK);
-        passwordField.setForeground(Color.GREEN);
-
-        JLabel passLabel = new JLabel("Password:");
-        passLabel.setBounds(20,40, 80,30);
-        passLabel.setForeground(Color.GREEN);
-
-        JLabel badCredentials = new JLabel("Bad credentials");
-        badCredentials.setBounds(20,80, 100,30);
-        badCredentials.setForeground(Color.RED);
-        badCredentials.setVisible(false);
-
-        frame.add(passwordField);
-        frame.add(passLabel);
-        frame.add(badCredentials);
-        frame.setLayout(null);
-        frame.setVisible(true);
-
-//        DELETE BEFORE JAR
-        new Main();
-        new Init().init();
-        new SwitchPanel();
-
-        passwordField.addActionListener(event ->
-        {
-            if(getAccess(passwordField.getPassword()))
-            {
-                frame.setVisible(false);
-                frame.dispose();
-                new Main();
-                new Init().init();
-                new SwitchPanel();
-            }
-            else
-            {
-                badCredentials.setVisible(true);
-            }
-        });
-    }
-
-    private static boolean getAccess(char[] password)
-    {
-        char[] correctPass = { 'a', 's', 'd'};
-
-        return password.length == correctPass.length && Arrays.equals(password, correctPass);
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
