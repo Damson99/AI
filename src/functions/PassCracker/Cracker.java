@@ -9,9 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Cracker implements Runnable
 {
-    private int start;
+    private final int start;
 
-    private int end;
+    private final int end;
 
     private final MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
 
@@ -19,14 +19,11 @@ public class Cracker implements Runnable
 
     private String decrypted;
 
-    private SwitchPanel switchPanel;
 
-
-    public Cracker(int s, int e, SwitchPanel sp) throws NoSuchAlgorithmException
+    public Cracker(int s, int e) throws NoSuchAlgorithmException
     {
         start = s;
         end = e;
-        switchPanel = sp;
     }
 
     private void generate(StringBuilder stringBuilder, int length)
@@ -47,7 +44,7 @@ public class Cracker implements Runnable
             return;
         }
 
-        switchPanel.addLineToCracker("Password not cracked for subset [ " + start + ", " + end + " ]" + "\n");
+        SwitchPanel.getInstance().addLineToCracker("Password not cracked for subset [ " + start + ", " + end + " ]" + "\n");
 
         for(int i = 0; i < PasswordCracker.ALPHABET.length && !DONE; i++)
         {
@@ -70,14 +67,14 @@ public class Cracker implements Runnable
         if(DONE)
         {
             long duration = System.currentTimeMillis() - PasswordCracker.START_TIME;
-            switchPanel.addLineToCracker("[+] Password Cracked in " + TimeUnit.MILLISECONDS.toSeconds(duration)
+            SwitchPanel.getInstance().addLineToCracker("[+] Password Cracked in " + TimeUnit.MILLISECONDS.toSeconds(duration)
                     + "." + TimeUnit.MILLISECONDS.toMillis(duration) + " sec" + "\n");
-            switchPanel.setTextField2(decrypted);
+            SwitchPanel.getInstance().setTextField2(decrypted);
             System.out.println(decrypted);
         }
         else
         {
-            switchPanel.addLineToCracker("[-] Password not cracked for subset [ " + start + ", " + end + " ]" + "\n");
+            SwitchPanel.getInstance().addLineToCracker("[-] Password not cracked for subset [ " + start + ", " + end + " ]" + "\n");
             System.out.println("Password not cracked for subset [ " + start + ", " + end + " ]" + "\n");
         }
     }

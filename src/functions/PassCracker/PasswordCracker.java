@@ -31,17 +31,17 @@ public class PasswordCracker
         return data;
     }
 
-    public void startCracking(SwitchPanel switchPanel)
+    public void startCracking()
     {
-        if(switchPanel.getTextField1().length() != 64)
+        if(SwitchPanel.getInstance().getTextField1().length() != 64)
         {
-            switchPanel.addLineToCracker("INVALID ENCRYPTED PASSWORD... \n");
+            SwitchPanel.getInstance().addLineToCracker("INVALID ENCRYPTED PASSWORD... \n");
             return;
         }
         else
         {
-            ENCRYPTED_PASSWORD_BYTES = encryptedPassToByteArray(switchPanel.getTextField1());
-            switchPanel.addLineToCracker("CRACKING STARTED... \n");
+            ENCRYPTED_PASSWORD_BYTES = encryptedPassToByteArray(SwitchPanel.getInstance().getTextField1());
+            SwitchPanel.getInstance().addLineToCracker("CRACKING STARTED... \n");
         }
 
         int cores = Runtime.getRuntime().availableProcessors();
@@ -64,11 +64,11 @@ public class PasswordCracker
 
             try
             {
-                executorService.submit(new Cracker(start, end, switchPanel));
+                executorService.submit(new Cracker(start, end));
             }
             catch (NoSuchAlgorithmException ex)
             {
-                switchPanel.addLineToCracker("ERROR :" + ex.toString() + "\n");
+                SwitchPanel.getInstance().addLineToCracker("ERROR :" + ex.toString() + "\n");
                 ex.printStackTrace();
             }
         }
