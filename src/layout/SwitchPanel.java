@@ -19,7 +19,23 @@ public class SwitchPanel
     private JTextArea textArea2;
     private JTextPane textPane1;
     private JTextPane textPane2;
+    private static SwitchPanel instance;
 
+
+    private SwitchPanel()
+    {
+
+    }
+
+    public static SwitchPanel getInstance()
+    {
+        return SingletonHolder.INSTANCE;
+    }
+
+    private static class SingletonHolder
+    {
+        private static final SwitchPanel INSTANCE = new SwitchPanel();
+    }
 
     public void showSwitchPanel()
     {
@@ -50,6 +66,11 @@ public class SwitchPanel
         textArea1.append(s);
     }
 
+    public void addError(String err)
+    {
+        textArea1.append("ERROR: " + err + "\n");
+    }
+
     public void saveCommandTrack()
     {
         try
@@ -68,7 +89,7 @@ public class SwitchPanel
         }
         catch (IOException | DocumentException ex)
         {
-            addCommand("ERROR : " + ex.toString() + "\n");
+            addError(ex.toString());
             ex.printStackTrace();
         }
     }
