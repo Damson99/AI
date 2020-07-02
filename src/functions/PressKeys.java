@@ -8,8 +8,6 @@ import java.awt.event.KeyEvent;
 
 public class PressKeys
 {
-    private SwitchPanel switchPanel = new SwitchPanel();
-
     private Robot robot;
 
 
@@ -22,7 +20,7 @@ public class PressKeys
         }
         catch (AWTException ex)
         {
-            switchPanel.addCommand("ERROR : " + ex.toString() + "\n");
+            SwitchPanel.getInstance().addCommand("ERROR : " + ex.toString() + "\n");
             ex.printStackTrace();
 
         }
