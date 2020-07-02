@@ -11,42 +11,40 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Init extends JFrame
+public class Init
 {
-    private SwitchPanel switchPanel = new SwitchPanel();
-
     public void init()
     {
         final TrayIcon trayIcon;
 
-        if(!SystemTray.isSupported())
+        if(SystemTray.isSupported())
         {
-            ///
-        }
+            SystemTray tray = SystemTray.getSystemTray();
+            Image image = new ImageIcon(getClass().getResource("/resources/Icon1.png")).getImage();
 
-        SystemTray tray = SystemTray.getSystemTray();
-        Image image = new ImageIcon(getClass().getResource("/resources/Icon1.png")).getImage();
-
-        trayIcon = new TrayIcon(image);
-        trayIcon.setImageAutoSize(true);
+            trayIcon = new TrayIcon(image);
+            trayIcon.setImageAutoSize(true);
 //        trayIcon.addActionListener(event ->
 //        {
 //            trayIcon.displayMessage("Jak to wyłączyć?", "Kliknij ikonę prawym przyciskiem myszy i wybierz Zakończ.",
 //                    TrayIcon.MessageType.INFO);
 //        });
 
-        try
-        {
-            tray.add(trayIcon);
+            try
+            {
+                tray.add(trayIcon);
+            }
+            catch(AWTException ex)
+            {
+                SwitchPanel.getInstance().addCommand("ERROR : " + ex.toString() + "\n" +
+                        "Nie udało się dodać ikony do zasobnika systemowego \n");
+                ex.printStackTrace();
+            }
         }
-        catch(AWTException ex)
+        else
         {
-            switchPanel.addCommand("ERROR : " + ex.toString() + "\n" +
-                    "Nie udało się dodać ikony do zasobnika systemowego \n");
-            ex.printStackTrace();
+            SwitchPanel.getInstance().addCommand("OMEGA: No access to the system tray");
         }
-
-        setVisible(false);
     }
 
     public void saveCommandTrack()
@@ -69,7 +67,7 @@ public class Init extends JFrame
         }
         catch (IOException ex)
         {
-            switchPanel.addCommand("ERROR : " + ex.toString() + "\n");
+            SwitchPanel.getInstance().addCommand("ERROR : " + ex.toString() + "\n");
             ex.printStackTrace();
         }
     }

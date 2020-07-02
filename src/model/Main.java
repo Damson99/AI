@@ -35,7 +35,6 @@ public class Main
     private final Init init = new Init();
     private final Calculator calculator = new Calculator();
     private final PressKeys pressKeys = new PressKeys();
-    private final SwitchPanel switchPanel = new SwitchPanel();
     private final RemoteDesktop remoteDesktop = new RemoteDesktop();
 
 
@@ -46,15 +45,15 @@ public class Main
 
     public static void start()
     {
-        new Main();
+        SwitchPanel.getInstance();
         new Init().init();
-        new SwitchPanel();
+        new Main();
     }
 
     private Main()
     {
 //        logger.log(Level.INFO, "OMEGA : Loading...\n");
-        switchPanel.addCommand("OMEGA : Loading...\n");
+        SwitchPanel.getInstance().addCommand("OMEGA : Loading...\n");
 
         Configuration configuration = new Configuration();
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
@@ -70,7 +69,7 @@ public class Main
         }
         catch (IOException ex)
         {
-            switchPanel.addCommand("ERROR : " + ex.toString() + "\n");
+            SwitchPanel.getInstance().addCommand("ERROR : " + ex.toString() + "\n");
             ex.printStackTrace();
         }
 
@@ -102,23 +101,23 @@ public class Main
                     {
                         task = speechResult.getHypothesis();
 //                        System.out.println("Me : " + task + "\n");
-                        switchPanel.addCommand("Me : " + task + "\n");
+                        SwitchPanel.getInstance().addCommand("Me : " + task + "\n");
                         task(task);
                     }
                     else
                     {
 //                        System.out.println("OMEGA : I can't understand what you said.\n");
-                        switchPanel.addCommand("OMEGA : I can't understand what you said.\n");
+                        SwitchPanel.getInstance().addCommand("OMEGA : I can't understand what you said.\n");
                     }
                 }
             }
             catch (Exception ex)
             {
-                switchPanel.addCommand("ERROR : " + ex.toString() + "\n");
+                SwitchPanel.getInstance().addCommand("ERROR : " + ex.toString() + "\n");
                 ex.printStackTrace();
             }
 
-            switchPanel.addCommand("OMEGA : Speech thread has exited...");
+            SwitchPanel.getInstance().addCommand("OMEGA : Speech thread has exited...");
 
         });
 
@@ -138,7 +137,7 @@ public class Main
                    if(!AudioSystem.isLineSupported(Port.Info.MICROPHONE))
                    {
 //                       System.out.println("OMEGA : Microphone is unavailable.\n");
-                       switchPanel.addCommand("OMEGA : Microphone is unavailable.\n");
+                       SwitchPanel.getInstance().addCommand("OMEGA : Microphone is unavailable.\n");
                    }
 
 //                   Thread.sleep(350);
@@ -209,19 +208,19 @@ public class Main
 
             if ("switch to voice one".equalsIgnoreCase(task))
             {
-                stringToSpeech.setVoice("cmu-slt-hsmm");
+                stringToSpeech.setVoice(Voices.ONE);
                 stringToSpeech.speak("Yes sir", false, true);
             }
 
             if ("switch to voice two".equalsIgnoreCase(task))
             {
-                stringToSpeech.setVoice("dfki-poppy-hsmm");
+                stringToSpeech.setVoice(Voices.TWO);
                 stringToSpeech.speak("Yes sir", false, true);
             }
 
             if ("switch to voice three".equalsIgnoreCase(task))
             {
-                stringToSpeech.setVoice("cmu-rms-hsmm");
+                stringToSpeech.setVoice(Voices.THREE);
                 stringToSpeech.speak("Yes sir", false, true);
             }
 
@@ -331,34 +330,23 @@ public class Main
             {
                 if(array.length > 2)
                 {
-                    pcAttributes.setVolume(stringToNumberEng.convert(array[2]));
+//                    pcAttributes.setVolume(stringToNumberEng.convert(array[2]));
                 }
             }
 
             if("show switch panel".equalsIgnoreCase(task))
             {
-                switchPanel.showSwitchPanel();
-            }
-
-            if("show command list".equalsIgnoreCase(task))
-            {
-                init.setVisible(true);
-            }
-
-            if("hide command list".equalsIgnoreCase(task))
-            {
-                init.setVisible(false);
+                SwitchPanel.getInstance().showSwitchPanel();
             }
 
             if("crack password".equalsIgnoreCase(task))
             {
-                PasswordCracker passwordCracker = new PasswordCracker();
-                passwordCracker.startCracking(switchPanel);
+                new PasswordCracker().startCracking();
             }
 
             if("save command track".equalsIgnoreCase(task))
             {
-                switchPanel.saveCommandTrack();
+                SwitchPanel.getInstance().saveCommandTrack();
             }
 
             if ("calculate".equalsIgnoreCase(array[0]))
