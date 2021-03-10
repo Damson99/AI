@@ -241,7 +241,7 @@ public class Main
 
             if("show me the most beautiful girl".equalsIgnoreCase(task))
             {
-                opener.openBrowser("https://www.instagram.com/olciamat/");
+                opener.openBrowser("https://www.instagram.com/***/");
                 stringToSpeech.speak("She is the most beautiful girl on the world, is she", false, true);
             }
 
